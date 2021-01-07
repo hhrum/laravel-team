@@ -11,11 +11,11 @@ class Chat extends Model
 
     protected $guarded = [];
 
-    public function chatUsers() {
-        return $this->hasMany(ChatUser::class);
+    public function users() {
+        return $this->belongsToMany(User::class);
     }
 
-    public function users() {
-        return $this->chatUsers;
+    public function messages() {
+        return $this->hasMany(Message::class)->orderByDesc('id');
     }
 }

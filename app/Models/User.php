@@ -6,10 +6,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -41,11 +42,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function chatUsers() {
-        return $this->hasMany(ChatUser::class);
+    public function chats() {
+        return $this->belongsToMany(Chat::class);
     }
 
-    public function chats() {
-        return $this->chatUsers;
+    public function sendMessage($chat, $message_content) {
+        $message = new Message();
+
+        $message->content = $message_content;
+        $message->chat_id = $chat->id;
+        $message->user_id = $this->id;
+
+        return $message->save();
     }
 }

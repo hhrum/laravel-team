@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthTokenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('token/create', [AuthTokenController::class, 'create']);
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('token/delete', [AuthTokenController::class, 'delete']);
+
+    Route::apiResource('chat', \App\Http\Controllers\ChatController::class);
+
+});
+
