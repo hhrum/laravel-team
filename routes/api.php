@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('token/delete', [AuthTokenController::class, 'delete']);
 
     Route::apiResource('chat', \App\Http\Controllers\ChatController::class);
+    Route::apiResource('message', \App\Http\Controllers\MessageController::class);
 
 });
 
